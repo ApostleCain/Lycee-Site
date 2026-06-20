@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlPage">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدارس ليسيه الهرم | Lycée El-Haram Schools</title>
+    <style>
+        /* --- General Reset & Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #222;
+            background-color: #fdfdfd;
+            transition: direction 0.3s ease;
+            position: relative; 
+            min-height: 100vh; 
+        }
+
+        /* --- THE BACKGROUND: HIGH VISIBILITY WITH A HINT OF TRANSPARENCY --- */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('pyramids.png') center/cover no-repeat;
+            opacity: 0.85; /* 85% visible, just a tiny hint transparent */
+            z-index: -1; 
+        }
+
+        /* --- Navigation Bar (Modern Frosted Glass) --- */
+        header {
+            background-color: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .logo-container img {
+            height: 60px;
+            width: auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-container img:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links li {
+            position: relative;
+            margin: 0 8px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #0033a0;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .nav-links a:hover, .nav-links a.active-tab {
+            color: #fff;
+            background-color: #0033a0;
+            box-shadow: 0 4px 15px rgba(0, 51, 160, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Dropdowns (Modern Glass) */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            min-width: 180px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            overflow: hidden;
+            padding: 8px 0;
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        html[dir="rtl"] .dropdown-menu { right: 0; left: auto; }
+        html[dir="ltr"] .dropdown-menu { left: 0; right: auto; }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            animation: dropFade 0.3s ease forwards;
+        }
+
+        @keyframes dropFade {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-menu li { margin: 0; }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 10px 20px;
+            color: #333;
+            font-weight: 600;
+            border-radius: 0;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: rgba(0, 51, 160, 0.1);
+            color: #0033a0;
+        }
+
+        /* Auth Buttons */
+        .auth-buttons button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-login {
+            background-color: rgba(255, 255, 255, 0.4);
+            color: #0033a0;
+            border: 2px solid #0033a0 !important;
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-signup {
+            background: linear-gradient(135deg, #cda036, #e3b645);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(205, 160, 54, 0.3);
+        }
+
+        .btn-login:hover { 
+            background-color: #0033a0; 
+            color: #fff; 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 51, 160, 0.2);
+        }
+        
+        .btn-signup:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(205, 160, 54, 0.5);
+            background: linear-gradient(135deg, #e3b645, #cda036);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #0033a0;
+            transition: 0.3s;
+        }
+
+        .menu-toggle:hover { transform: scale(1.1); }
+
+        /* --- Sections --- */
+        .page-section {
+            display: none;
+            padding: 130px 20px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .page-section.active-section { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(rgba(0, 51, 160, 0.5), rgba(0, 0, 0, 0.7)), url('pyramids.png') center/cover no-repeat;
+            background-color: #888;
+            height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+        }
+
+        .hero-banner h1 { font-size: 3.5rem; margin-bottom: 15px; text-shadow: 0 4px 15px rgba(0,0,0,0.8); font-weight: 800; }
+        .hero-banner p { font-size: 1.4rem; max-width: 700px; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
+
+        /* Glassmorphism Cards for content */
+        .about-box, .placeholder-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+        }
+        
+        .about-box { border-top: 6px solid #cda036; }
+
+        .about-box h2, .placeholder-card h2 { color: #0033a0; margin-bottom: 25px; font-size: 2.2rem; font-weight: 800; }
+        .about-box p { font-size: 1.15rem; color: #333; line-height: 2; margin-bottom: 20px; text-align: justify; font-weight: 500; }
+
+        .placeholder-card { text-align: center; }
+
+        /* --- Modals (Popups) - Modernized --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            z-index: 2000;
+            align-items: center; justify-content: center;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .modal-card {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 420px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .close-modal-btn {
+            position: absolute;
+            top: 20px; cursor: pointer; font-size: 28px; color: #888; transition: 0.3s;
+        }
+        html[dir="rtl"] .close-modal-btn { left: 25px; }
+        html[dir="ltr"] .close-modal-btn { right: 25px; }
+        .close-modal-btn:hover { color: #ff4757; transform: rotate(90deg); }
+
+        .modal-card h2 { margin-bottom: 25px; color: #0033a0; font-size: 1.8rem; text-align: center; font-weight: 800; }
+        
+        .modal-card input {
+            width: 100%; padding: 15px; margin-bottom: 18px; 
+            background: rgba(255,255,255,0.8);
+            border: 2px solid #e1e5ee; border-radius: 10px; 
+            font-size: 15px; outline: none; transition: all 0.3s;
+        }
+        
+        .modal-card input:focus { 
+            border-color: #0033a0; 
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(0,51,160,0.1); 
+        }
+        
+        .modal-card button {
+            width: 100%; padding: 15px; 
+            background: linear-gradient(135deg, #0033a0, #0050ff); 
+            color: white; border: none; border-radius: 10px; 
+            font-size: 16px; font-weight: bold; cursor: pointer; 
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 51, 160, 0.3);
+        }
+        
+        .modal-card button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 51, 160, 0.4);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 85px; left: 0;
+                background-color: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(15px);
+                padding: 20px;
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            }
+            .nav-links.mobile-active { display: flex; }
+            .nav-links li { margin: 10px 0; width: 100%; text-align: center; }
+            .dropdown-menu { position: static; box-shadow: none; width: 100%; background: transparent; border: none; }
+            .menu-toggle { display: block; }
+            .auth-buttons { display: none; }
+            .hero-banner h1 { font-size: 2.2rem; }
+            .page-section { padding-top: 110px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="navbar">
+            <div class="logo-container" onclick="showSection('home')">
+                <img src="logo.png" alt="Lycée El-Haram Logo" onerror="this.style.display='none'; document.getElementById('logoText').style.display='block';">
+                <span id="logoText" class="logo" style="display:none; font-weight:bold; color:#0033a0; font-size:22px;">Lycée El-Haram</span>
+            </div>
+            
+            <div class="menu-toggle" onclick="toggleMobileMenu()">☰</div>
+
+            <ul class="nav-links" id="navLinksMenu">
+                <li><a id="tab-home" class="active-tab" onclick="showSection('home')">الرئيسية</a></li>
+                <li><a id="tab-about" onclick="showSection('about')">من نحن</a></li>
+                <li class="dropdown">
+                    <a id="tab-gallery">المعرض ▼</a>
+                    <ul class="dropdown-menu">
+                        <li><a onclick="showSection('pictures')">Pictures</a></li>
+                        <li><a onclick="showSection('videos')">Videos</a></li>
+                    </ul>
+                </li>
+                <li><a id="tab-faqs" onclick="showSection('faqs')">الأسئلة الشائعة</a></li>
+                <li><a id="tab-contact" onclick="showSection('contact')">اتصل بنا</a></li>
+                <li class="dropdown">
+                    <a id="tab-lang-title">اللغة ▼</a>
+                    <ul class="dropdown-menu">
+                        <li><a onclick="changeLanguage('ar')">العربية (Arabic)</a></li>
+                        <li><a onclick="changeLanguage('en')">English</a></li>
+                        <li><a onclick="changeLanguage('fr')">Français</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="auth-buttons">
+                <button id="btn-login-txt" class="btn-login" onclick="toggleModal('loginModal', true)">بوابة الدخول</button>
+                <button id="btn-signup-txt" class="btn-signup" onclick="toggleModal('signupModal', true)">إنشاء حساب</button>
+            </div>
+        </div>
+    </header>
+
+    <section id="sec-home" class="page-section active-section">
+        <div class="hero-banner">
+            <div>
+                <h1 id="hero-title">مرحباً بكم في مدارس ليسيه الهرم</h1>
+                <p id="hero-desc">تمكين الجيل القادم من خلال التميز ثنائي اللغة، والتكنولوجيا الحديثة، والقيم الأخلاقية الراسخة.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="sec-about" class="page-section">
+        <div class="about-box">
+            <h2 id="about-heading">تاريخ المدرسة ورؤيتها</h2>
+            <div id="about-content-area"></div>
+        </div>
+    </section>
+
+    <section id="sec-pictures" class="page-section">
+        <div class="placeholder-card">
+            <h2 id="title-pics">معرض الصور</h2>
+            <p style="margin-top:20px; color:#555;">هنا يتم عرض أحدث صور الأنشطة والفعاليات المدرسية.</p>
+        </div>
+    </section>
+
+    <section id="sec-videos" class="page-section">
+        <div class="placeholder-card">
+            <h2 id="title-vids">معرض الفيديوهات</h2>
+            <p style="margin-top:20px; color:#555;">تابع الفيديوهات التوثيقية والتعليمية لطلابنا.</p>
+        </div>
+    </section>
+
+    <section id="sec-faqs" class="page-section">
+        <div class="placeholder-card">
+            <h2 id="title-faqs">الأسئلة الشائعة</h2>
+            <p style="margin-top:20px; color:#555;">أجوبة عن كافة استفسارات أولياء الأمور والطلاب حول نظام التسجيل والدراسة.</p>
+        </div>
+    </section>
+
+    <section id="sec-contact" class="page-section">
+        <div class="placeholder-card">
+            <h2 id="title-contact">اتصل بنا</h2>
+            <p style="margin-top:20px; color:#555;">نحن هنا للإجابة على اتصالاتكم واستفساراتكم على مدار الساعة.</p>
+        </div>
+    </section>
+
+    <div id="loginModal" class="modal-overlay" onclick="checkCloseOutside(event, 'loginModal')">
+        <div class="modal-card">
+            <span class="close-modal-btn" onclick="toggleModal('loginModal', false)">&times;</span>
+            <h2 id="m-login-title">تسجيل الدخول</h2>
+            <form onsubmit="handleAuthSubmit(event, 'login')">
+                <input type="text" id="input-login-user" placeholder="اسم المستخدم أو البريد الإلكتروني" required>
+                <input type="password" id="input-login-pass" placeholder="كلمة المرور" required>
+                <button type="submit" id="btn-submit-login">دخول</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="signupModal" class="modal-overlay" onclick="checkCloseOutside(event, 'signupModal')">
+        <div class="modal-card">
+            <span class="close-modal-btn" onclick="toggleModal('signupModal', false)">&times;</span>
+            <h2 id="m-signup-title">إنشاء حساب جديد</h2>
+            <form onsubmit="handleAuthSubmit(event, 'signup')">
+                <input type="text" id="input-sign-user" placeholder="اسم المستخدم" required>
+                <input type="email" id="input-sign-email" placeholder="البريد الإلكتروني" required>
+                <input type="password" id="input-sign-pass" placeholder="كلمة المرور" required>
+                <button type="submit" id="btn-submit-signup">إنشاء الحساب</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const localizedStrings = {
+            ar: {
+                dir: "rtl",
+                tabHome: "الرئيسية", tabAbout: "من نحن", tabGallery: "المعرض ▼", tabFaqs: "الأسئلة الشائعة", tabContact: "اتصل بنا", tabLang: "اللغة ▼",
+                heroTitle: "مرحباً بكم في مدارس ليسيه الهرم",
+                heroDesc: "تمكين الجيل القادم من خلال التميز ثنائي اللغة، والتكنولوجيا الحديثة، والقيم الأخلاقية الراسخة.",
+                btnLogin: "بوابة الدخول", btnSignup: "إنشاء حساب",
+                aboutHeading: "تاريخ المدرسة ورؤيتها",
+                aboutParagraphs: [
+                    "تلتزم مدارس «ليسيه الهرم» بتوفير بيئة تعليمية آمنة ومحفزة تعزز الإبداع والانضباط والتفكير النقدي والابتكار. من خلال التعليم الثنائي اللغة المتكامل باللغتين الفرنسية والإنجليزية، تعتمد المدرسة التكنولوجيا الحديثة وتطبق استراتيجيات التعلم الرقمي مع تطوير الكفاءات الرقمية لدى الطلاب.",
+                    "ويضمن هذا النهج تحقيق التوازن بين التميز الأكاديمي والأنشطة التربوية والثقافية والفنية، في إطار القيم الأخلاقية والهوية الوطنية.",
+                    "وبالشراكة مع المركز الثقافي الفرنسي والمعاهد الوطنية، وبدافع من روح العمل غير الربحي، تسعى المدرسة جاهدة لخدمة كل من العملية التعليمية والمجتمع."
+                ],
+                picsTitle: "معرض الصور", vidsTitle: "معرض الفيديوهات", faqsTitle: "الأسئلة الشائعة", contactTitle: "اتصل بنا",
+                mLoginTitle: "تسجيل الدخول", mSignupTitle: "إنشاء حساب جديد",
+                pUser: "البريد الإلكتروني أو اسم المستخدم", pPass: "كلمة المرور", bLogin: "دخول",
+                pSignUser: "اسم المستخدم", pSignEmail: "البريد الإلكتروني", pSignPass: "كلمة المرور", bSign: "إنشاء الحساب"
+            },
+            en: {
+                dir: "ltr",
+                tabHome: "Home", tabAbout: "About Us", tabGallery: "Gallery ▼", tabFaqs: "FAQs", tabContact: "Contact Us", tabLang: "Language ▼",
+                heroTitle: "Welcome to Lycée Al-Haram",
+                heroDesc: "Empowering the next generation through bilingual excellence, modern technology, and strong ethical values.",
+                btnLogin: "Sign In", btnSignup: "Register",
+                aboutHeading: "School History & Vision",
+                aboutParagraphs: [
+                    "Lycée Al-Haram Schools is committed to providing a safe and stimulating learning environment that fosters creativity, discipline, critical thinking, and innovation. Through an integrated bilingual education in French and English, the school adopts modern technology and implements digital learning strategies while developing students’ digital competencies.",
+                    "This approach ensures a balance between academic excellence and educational, cultural, and artistic activities, within a framework of ethical values and national identity.",
+                    "In partnership with the French Cultural Center and the National Institutes, and driven by a non-profit spirit, the school strives to serve both the educational process and the community."
+                ],
+                picsTitle: "Picture Gallery", vidsTitle: "Video Gallery", faqsTitle: "Frequently Asked Questions", contactTitle: "Contact Us",
+                mLoginTitle: "Student / Parent Portal", mSignupTitle: "Create an Account",
+                pUser: "Email Address", pPass: "Password", bLogin: "Sign In",
+                pSignUser: "Username", pSignEmail: "Email Address", pSignPass: "Password", bSign: "Register"
+            },
+            fr: {
+                dir: "ltr",
+                tabHome: "Accueil", tabAbout: "À Propos", tabGallery: "Galerie ▼", tabFaqs: "FAQs", tabContact: "Contact", tabLang: "Langue ▼",
+                heroTitle: "Bienvenue au Lycée Al-Haram",
+                heroDesc: "Autonomiser la prochaine génération grâce à l'excellence bilingue, aux technologies modernes et à des valeurs éthiques fortes.",
+                btnLogin: "Connexion", btnSignup: "S'inscrire",
+                aboutHeading: "Histoire et Vision de l'École",
+                aboutParagraphs: [
+                    "Le Lycée Al-Haram s'engage à offrir un environnement d'apprentissage sûr et stimulant, propice à la créativité, à la discipline, à l'esprit critique et à l'innovation. Grâce à un enseignement bilingue intégré en français et en anglais, l'établissement adopte les technologies modernes et met en œuvre des stratégies d'apprentissage numérique tout en développant les compétences numériques des élèves.",
+                    "Cette approche garantit un équilibre entre l'excellence académique et les activités éducatives, culturelles et artistiques, dans un cadre fondé sur des valeurs éthiques et l'identité nationale.",
+                    "En partenariat avec le Centre culturel français et les Instituts nationaux, et animée par un esprit associatif, l'école s'efforce de servir à la fois le processus éducatif et la communauté."
+                ],
+                picsTitle: "Galerie de Photos", vidsTitle: "Galerie Vidéos", faqsTitle: "Questions Fréquentes", contactTitle: "Contactez-nous",
+                mLoginTitle: "Portail de Connexion", mSignupTitle: "Créer un Compte",
+                pUser: "Adresse Email", pPass: "Mot de passe", bLogin: "Se Connecter",
+                pSignUser: "Nom d'utilisateur", pSignEmail: "Adresse Email", pSignPass: "Mot de passe", bSign: "S'inscrire"
+            }
+        };
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(sec => sec.classList.remove('active-section'));
+
+            const targetSection = document.getElementById('sec-' + sectionId);
+            if (targetSection) targetSection.classList.add('active-section');
+
+            const tabs = document.querySelectorAll('.nav-links a');
+            tabs.forEach(tab => tab.classList.remove('active-tab'));
+            
+            let activeTab = document.getElementById('tab-' + sectionId);
+            if (!activeTab && (sectionId === 'pictures' || sectionId === 'videos')) {
+                activeTab = document.getElementById('tab-gallery');
+            }
+            if (activeTab) activeTab.classList.add('active-tab');
+
+            document.getElementById('navLinksMenu').classList.remove('mobile-active');
+        }
+
+        function changeLanguage(langCode) {
+            const data = localizedStrings[langCode];
+            if (!data) return;
+
+            const htmlTag = document.getElementById('htmlPage');
+            htmlTag.setAttribute('dir', data.dir);
+            htmlTag.setAttribute('lang', langCode);
+
+            document.getElementById('tab-home').innerText = data.tabHome;
+            document.getElementById('tab-about').innerText = data.tabAbout;
+            document.getElementById('tab-gallery').innerText = data.tabGallery;
+            document.getElementById('tab-faqs').innerText = data.tabFaqs;
+            document.getElementById('tab-contact').innerText = data.tabContact;
+            document.getElementById('tab-lang-title').innerText = data.tabLang;
+
+            document.getElementById('btn-login-txt').innerText = data.btnLogin;
+            document.getElementById('btn-signup-txt').innerText = data.btnSignup;
+            document.getElementById('hero-title').innerText = data.heroTitle;
+            document.getElementById('hero-desc').innerText = data.heroDesc;
+
+            document.getElementById('about-heading').innerText = data.aboutHeading;
+            const contentArea = document.getElementById('about-content-area');
+            contentArea.innerHTML = "";
+            data.aboutParagraphs.forEach(paraText => {
+                const p = document.createElement('p');
+                p.innerText = paraText;
+                contentArea.appendChild(p);
+            });
+
+            document.getElementById('title-pics').innerText = data.picsTitle;
+            document.getElementById('title-vids').innerText = data.vidsTitle;
+            document.getElementById('title-faqs').innerText = data.faqsTitle;
+            document.getElementById('title-contact').innerText = data.contactTitle;
+
+            document.getElementById('m-login-title').innerText = data.mLoginTitle;
+            document.getElementById('input-login-user').setAttribute('placeholder', data.pUser);
+            document.getElementById('input-login-pass').setAttribute('placeholder', data.pPass);
+            document.getElementById('btn-submit-login').innerText = data.bLogin;
+
+            document.getElementById('m-signup-title').innerText = data.mSignupTitle;
+            document.getElementById('input-sign-user').setAttribute('placeholder', data.pSignUser);
+            document.getElementById('input-sign-email').setAttribute('placeholder', data.pSignEmail);
+            document.getElementById('input-sign-pass').setAttribute('placeholder', data.pSignPass);
+            document.getElementById('btn-submit-signup').innerText = data.bSign;
+        }
+
+        function toggleModal(modalId, isShow) {
+            document.getElementById(modalId).style.display = isShow ? 'flex' : 'none';
+        }
+
+        function checkCloseOutside(event, modalId) {
+            if (event.target === document.getElementById(modalId)) {
+                toggleModal(modalId, false);
+            }
+        }
+
+        function handleAuthSubmit(event, type) {
+            event.preventDefault();
+            if (type === 'login') {
+                alert('Login form submitted.');
+                toggleModal('loginModal', false);
+            } else {
+                alert('Registration form submitted.');
+                toggleModal('signupModal', false);
+            }
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('navLinksMenu').classList.toggle('mobile-active');
+        }
+
+        window.onload = function() {
+            changeLanguage('en'); 
+        };
+    </script>
+</body>
+</html>
